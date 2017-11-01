@@ -16,7 +16,7 @@ public class TMesh : MonoBehaviour
 				float fZ = y;
 				if (x % 2 == 0)
 					fZ += 0.5f;
-				Instantiate(test, new Vector3(x, h / 2f, fZ), Quaternion.identity);
+				Instantiate(test, new Vector3(x * 0.86612f, h / 3f, fZ), Quaternion.identity);
 			}
 		}
 	}

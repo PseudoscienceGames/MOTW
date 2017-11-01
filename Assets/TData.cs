@@ -22,9 +22,4 @@ public class TData : MonoBehaviour
 		System.IO.File.WriteAllBytes(Application.dataPath + "/Test.png", tex.EncodeToPNG());
 		GetComponent<TMesh>().GenMesh(tex);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
