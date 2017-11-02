@@ -6,7 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(MeshRenderer))]
 public class TMesh : MonoBehaviour
 {
-	public GameObject test;
 	private List<Vector3> verts = new List<Vector3>();
 	private List<int> tris = new List<int>();
 	public Dictionary<GridLoc, int> points = new Dictionary<GridLoc, int>();
@@ -31,6 +30,7 @@ public class TMesh : MonoBehaviour
 			for (int y = 0; y < tex.height; y++)
 			{
 				AddSides(new GridLoc(x, y));
+				AddFillerTris(new GridLoc(x, y));
 			}
 		}
 		GetComponent<MeshFilter>().mesh.vertices = verts.ToArray();
@@ -84,6 +84,21 @@ public class TMesh : MonoBehaviour
 					j -= 6;
 				tris.Add(points[g] + j);
 			}
+		}
+	}
+	void AddFillerTris(GridLoc g)
+	{
+		if(points.ContainsKey(g.Move(0)) && points.ContainsKey(g.Move(1)))
+		{
+			tris.Add(points[g] + 1);
+			tris.Add(points[g.Move(0)] + 3);
+			tris.Add(points[g.Move(1)] + 5);
+		}
+		if (points.ContainsKey(g.Move(5)) && points.ContainsKey(g.Move(0)))
+		{
+			tris.Add(points[g]);
+			tris.Add(points[g.Move(5)] + 2);
+			tris.Add(points[g.Move(0)] + 4);
 		}
 	}
 }
