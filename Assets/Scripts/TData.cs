@@ -18,7 +18,6 @@ public class TData : MonoBehaviour
 		}
 		tex.filterMode = FilterMode.Point;
 		tex.Apply();
-		GetComponent<Renderer>().material.mainTexture = tex;
 		System.IO.File.WriteAllBytes(Application.dataPath + "/Test.png", tex.EncodeToPNG());
 		GetComponent<TMesh>().GenMesh(tex);
 	}
