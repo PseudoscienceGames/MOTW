@@ -20,7 +20,7 @@ public class TMesh : MonoBehaviour
 		{
 			for (int y = s.y; y < e.y; y++)
 			{
-				int h = Mathf.RoundToInt(tex.GetPixel(x, y).g * 100f);
+				int h = Mathf.RoundToInt(tex.GetPixel(x, y).g * 10f);
 				float fX = x;
 				if (y % 2 == 0)
 					fX += 0.5f;
