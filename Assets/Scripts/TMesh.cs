@@ -11,13 +11,16 @@ public class TMesh : MonoBehaviour
 	public Dictionary<GridLoc, int> points = new Dictionary<GridLoc, int>();
 	public float hexSize;
 
-	public void GenMesh(Texture2D tex)
+	public void GenMesh(Texture2D tex, GridLoc s, GridLoc e, Mesh mesh)
 	{
-		for(int x = 0; x < tex.width; x++)
+		verts.Clear();
+		tris.Clear();
+		points.Clear();
+		for(int x = s.x; x < e.x; x++)
 		{
-			for (int y = 0; y < tex.height; y++)
+			for (int y = s.y; y < e.y; y++)
 			{
-				int h = Mathf.RoundToInt(tex.GetPixel(x, y).g * 5f);
+				int h = Mathf.RoundToInt(tex.GetPixel(x, y).g * 100f);
 				float fX = x;
 				if (y % 2 == 0)
 					fX += 0.5f;
@@ -25,17 +28,17 @@ public class TMesh : MonoBehaviour
 				AddTop(new GridLoc(x, y), pos);
 			}
 		}
-		for (int x = 0; x < tex.width; x++)
+		for (int x = s.x; x < e.x; x++)
 		{
-			for (int y = 0; y < tex.height; y++)
+			for (int y = s.y; y < e.y; y++)
 			{
 				AddSides(new GridLoc(x, y));
 				AddFillerTris(new GridLoc(x, y));
 			}
 		}
-		GetComponent<MeshFilter>().mesh.vertices = verts.ToArray();
-		GetComponent<MeshFilter>().mesh.triangles = tris.ToArray();
-		GetComponent<MeshFilter>().mesh.RecalculateNormals();
+		mesh.vertices = verts.ToArray();
+		mesh.triangles = tris.ToArray();
+		mesh.RecalculateNormals();
 	}
 
 	void AddTop(GridLoc g, Vector3 pos)
@@ -71,6 +74,7 @@ public class TMesh : MonoBehaviour
 	{
 		for (int i = 0; i < 6; i++)
 		{
+			GridLoc g1 = g.Move(i);
 			if (points.ContainsKey(g.Move(i)))
 			{
 				tris.Add(points[g] + i);
@@ -78,7 +82,6 @@ public class TMesh : MonoBehaviour
 				if (j > 5)
 					j -= 6;
 				tris.Add(points[g.Move(i)] + j);
-				Debug.Log(points[g.Move(i)]);
 				j = i + 1;
 				if (j > 5)
 					j -= 6;
@@ -121,7 +124,6 @@ public struct GridLoc
 			if (g.y % 2 == 0)
 				g.x += 1;
 			g.y += 1;
-			Debug.Log(x + " " + y + " " + dir + " " + g);
 		}
 		if (dir == 1)
 		{
@@ -151,7 +153,6 @@ public struct GridLoc
 				g.x += -1;
 			g.y += 1;
 		}
-		//Debug.Log(x + " " + y + " " + dir + " " + g);
 		return g;
 	}
 	public override string ToString()
