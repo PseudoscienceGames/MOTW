@@ -451,5 +451,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57847df9164085c43b124e65297cb20f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 1143389369112664, guid: 99809e9743a0ef549a37ac791f8f30b6, type: 2}
-  hexSize: 0.75
+  hexSize: 0.5
