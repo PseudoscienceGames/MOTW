@@ -78,6 +78,7 @@ public class TMesh : MonoBehaviour
 				if (j > 5)
 					j -= 6;
 				tris.Add(points[g.Move(i)] + j);
+				Debug.Log(points[g.Move(i)]);
 				j = i + 1;
 				if (j > 5)
 					j -= 6;
