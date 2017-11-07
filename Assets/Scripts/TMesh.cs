@@ -8,6 +8,7 @@ public class TMesh : MonoBehaviour
 {
 	private List<Vector3> verts = new List<Vector3>();
 	private List<int> tris = new List<int>();
+	private List<Vector2> uvs = new List<Vector2>();
 	public Dictionary<GridLoc, int> points = new Dictionary<GridLoc, int>();
 	public float hexSize;
 
@@ -15,6 +16,7 @@ public class TMesh : MonoBehaviour
 	{
 		verts.Clear();
 		tris.Clear();
+		uvs.Clear();
 		points.Clear();
 		for(int x = s.x; x < e.x; x++)
 		{
@@ -38,6 +40,7 @@ public class TMesh : MonoBehaviour
 		}
 		mesh.vertices = verts.ToArray();
 		mesh.triangles = tris.ToArray();
+		mesh.uv = uvs.ToArray();
 		mesh.RecalculateNormals();
 	}
 
@@ -51,6 +54,14 @@ public class TMesh : MonoBehaviour
 		verts.Add(pos + (new Vector3(0, 0, -0.5774f) * hexSize));
 		verts.Add(pos + (new Vector3(-0.5f, 0, -0.2887f) * hexSize));
 		verts.Add(pos + (new Vector3(-0.5f, 0, 0.2887f) * hexSize));
+
+		uvs.Add(new Vector2(0.5f, 0));
+		uvs.Add(new Vector2(1f, .25f));
+		uvs.Add(new Vector2(1f, .75f));
+		uvs.Add(new Vector2(0.5f, 1));
+		uvs.Add(new Vector2(0f, .75f));
+		uvs.Add(new Vector2(0f, .25f));
+
 
 		points.Add(g, count);
 
