@@ -4,39 +4,30 @@ using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
-public class TMesh : MonoBehaviour
+public class IslandMesh : MonoBehaviour
 {
 	private List<Vector3> verts = new List<Vector3>();
 	private List<int> tris = new List<int>();
 	private List<Vector2> uvs = new List<Vector2>();
 	public Dictionary<GridLoc, int> points = new Dictionary<GridLoc, int>();
 	public float hexSize;
+	public float tileHeight;
 
-	public void GenMesh(Texture2D tex, GridLoc s, GridLoc e, Mesh mesh)
+	public void GenMesh(Dictionary<GridLoc, int> tiles)
 	{
-		verts.Clear();
-		tris.Clear();
-		uvs.Clear();
-		points.Clear();
-		for(int x = s.x; x < e.x; x++)
+		Mesh mesh = GetComponent<MeshFilter>().mesh;
+		foreach(KeyValuePair<GridLoc, int> t in tiles)
 		{
-			for (int y = s.y; y < e.y; y++)
-			{
-				int h = Mathf.RoundToInt(tex.GetPixel(x, y).g * 10f);
-				float fX = x;
-				if (y % 2 == 0)
-					fX += 0.5f;
-				Vector3 pos = new Vector3(fX, h / 3f, y * 0.86612f);
-				AddTop(new GridLoc(x, y), pos);
-			}
+			Vector3 pos = t.Key.WorldSpace();
+			float h = t.Value * tileHeight;
+			pos.y += h;
+			AddTop(t.Key, pos);
 		}
-		for (int x = s.x; x < e.x; x++)
+		foreach (KeyValuePair<GridLoc, int> t in tiles)
 		{
-			for (int y = s.y; y < e.y; y++)
-			{
-				AddSides(new GridLoc(x, y));
-				AddFillerTris(new GridLoc(x, y));
-			}
+			AddSides(t.Key);
+			AddFillerTris(t.Key);
+			
 		}
 		mesh.vertices = verts.ToArray();
 		mesh.triangles = tris.ToArray();
@@ -88,86 +79,49 @@ public class TMesh : MonoBehaviour
 			GridLoc g1 = g.Move(i);
 			if (points.ContainsKey(g.Move(i)))
 			{
-				tris.Add(points[g] + i);
+				verts.Add(verts[points[g] + i]);
+				tris.Add(verts.Count - 1);
+				uvs.Add(Vector2.zero);
 				int j = i + 4;
 				if (j > 5)
 					j -= 6;
-				tris.Add(points[g.Move(i)] + j);
+				verts.Add(verts[(points[g.Move(i)] + j)]);
+				tris.Add(verts.Count - 1);
+				uvs.Add(new Vector2(0, 1));
 				j = i + 1;
 				if (j > 5)
 					j -= 6;
-				tris.Add(points[g] + j);
+				verts.Add(verts[points[g] + j]);
+				tris.Add(verts.Count - 1);
+				uvs.Add(new Vector2(1, 0));
 			}
 		}
 	}
 	void AddFillerTris(GridLoc g)
 	{
-		if(points.ContainsKey(g.Move(0)) && points.ContainsKey(g.Move(1)))
+		if (points.ContainsKey(g.Move(0)) && points.ContainsKey(g.Move(1)))
 		{
-			tris.Add(points[g] + 1);
-			tris.Add(points[g.Move(0)] + 3);
-			tris.Add(points[g.Move(1)] + 5);
+			verts.Add(verts[points[g] + 1]);
+			tris.Add(verts.Count - 1);
+			uvs.Add(Vector2.zero);
+			verts.Add(verts[points[g.Move(0)] + 3]);
+			tris.Add(verts.Count - 1);
+			uvs.Add(Vector2.zero);
+			verts.Add(verts[points[g.Move(1)] + 5]);
+			tris.Add(verts.Count - 1);
+			uvs.Add(Vector2.zero);
 		}
 		if (points.ContainsKey(g.Move(5)) && points.ContainsKey(g.Move(0)))
 		{
-			tris.Add(points[g]);
-			tris.Add(points[g.Move(5)] + 2);
-			tris.Add(points[g.Move(0)] + 4);
+			verts.Add(verts[points[g]]);
+			tris.Add(verts.Count - 1);
+			uvs.Add(Vector2.zero);
+			verts.Add(verts[points[g.Move(5)] + 2]);
+			tris.Add(verts.Count - 1);
+			uvs.Add(Vector2.zero);
+			verts.Add(verts[points[g.Move(0)] + 4]);
+			tris.Add(verts.Count - 1);
+			uvs.Add(Vector2.zero);
 		}
-	}
-}
-
-public struct GridLoc
-{
-	public int x;
-	public int y;
-
-	public GridLoc(int x, int y)
-	{
-		this.x = x;
-		this.y = y;
-	}
-	public GridLoc Move(int dir)
-	{
-		GridLoc g = new GridLoc(x, y);
-		if(dir == 0)
-		{
-			if (g.y % 2 == 0)
-				g.x += 1;
-			g.y += 1;
-		}
-		if (dir == 1)
-		{
-			g.x += 1;
-		}
-		if (dir == 2)
-		{
-			if (g.y % 2 == 0)
-				g.x += 1;
-			g.y += -1;
-
-		}
-		if (dir == 3)
-		{
-			if (g.y % 2 != 0)
-				g.x += -1;
-			g.y += -1;
-
-		}
-		if (dir == 4)
-		{
-			g.x += -1;
-		}
-		if (dir == 5)
-		{
-			if (g.y % 2 != 0)
-				g.x += -1;
-			g.y += 1;
-		}
-		return g;
-	}
-	public override string ToString()
-	{
-		return string.Format("({0},{1})", x, y);
 	}
 }
