@@ -50,7 +50,7 @@ public class IslandData : MonoBehaviour
 				if (innard)// && Random.Range(0, 1000) != 0)
 				{
 					//if(t % 2 == 0)
-						tiles[g] += Random.Range(1,3);
+					tiles[g]++;//= Random.Range(1,3);
 					raiseNext.Add(g);
 				}
 			}
