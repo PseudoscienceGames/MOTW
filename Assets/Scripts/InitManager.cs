@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InitManager : MonoBehaviour
 {
-	public List<Unit> initative = new List<Unit>();
+	public List<Unit> initiative = new List<Unit>();
 	private GameObject selection;
 	public bool next;
 
@@ -22,22 +22,24 @@ public class InitManager : MonoBehaviour
 		selection = GameObject.Find("Selection");
 		foreach (Unit u in GameObject.FindObjectsOfType<Unit>())
 		{
-			initative.Add(u);
+			initiative.Add(u);
 		}
-		Select();
 	}
 
 	void NextUnit()
 	{
-		Unit u = initative[0];
-		initative.RemoveAt(0);
-		initative.Add(u);
+		Unit u = initiative[0];
+		initiative.RemoveAt(0);
+		initiative.Add(u);
 		Select();
 	}
 
 	void Select()
 	{
-		selection.transform.position = initative[0].transform.position;
-		CameraControl.Instance.FocusCamera(initative[0].gridLoc);
+		selection.transform.position = initiative[0].transform.position;
+		CameraControl.Instance.FocusCamera(initiative[0].gridLoc);
+		GameObject.Find("Action Panel").GetComponent<ActionPanel>().AddButtons(initiative[0]);
+		GameObject.Find("Init Panel").GetComponent<InitPanel>().AddPanels(initiative);
+
 	}
 }
