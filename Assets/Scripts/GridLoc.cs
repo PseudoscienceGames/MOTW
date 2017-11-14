@@ -53,7 +53,7 @@ public struct GridLoc
 		return g;
 	}
 
-	public Vector3 WorldSpace()
+	public Vector3 ToWorld()
 	{
 		float fX = x;
 		if (y % 2 == 0)

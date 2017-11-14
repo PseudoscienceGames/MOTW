@@ -18,7 +18,7 @@ public class IslandMesh : MonoBehaviour
 		Mesh mesh = GetComponent<MeshFilter>().mesh;
 		foreach(KeyValuePair<GridLoc, int> t in tiles)
 		{
-			Vector3 pos = t.Key.WorldSpace();
+			Vector3 pos = t.Key.ToWorld();
 			float h = t.Value * tileHeight;
 			pos.y += h;
 			AddTop(t.Key, pos);

@@ -16,7 +16,8 @@ public class Team : MonoBehaviour
 		{
 			GameObject u = Instantiate(unit) as GameObject;
 			u.transform.Find("Char").GetComponent<Renderer>().material = mat;
-			u.transform.position = spawn.Move(i).WorldSpace() + (GameObject.Find("Island").GetComponent<IslandData>().tiles[spawn.Move(i)] * Vector3.up * .25f);
+			u.GetComponent<Unit>().gridLoc = spawn.Move(i);
+			u.transform.position = spawn.Move(i).ToWorld() + (GameObject.Find("Island").GetComponent<IslandData>().tiles[spawn.Move(i)] * Vector3.up * .25f);
 			units.Add(u.GetComponent<Unit>());
 			u.transform.parent = transform;
 		}

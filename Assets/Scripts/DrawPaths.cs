@@ -15,22 +15,22 @@ public class DrawPaths : MonoBehaviour
 					if (Mathf.Abs(tiles[g] - tiles[g.Move(i)]) == 1)
 					{
 						Color c = Color.red;
-						Vector3 p1 = g.WorldSpace() + (Vector3.up * tiles[g] * .25f);
-						Vector3 p2 = g.Move(i).WorldSpace() + (Vector3.up * tiles[g.Move(i)] * .25f);
+						Vector3 p1 = g.ToWorld() + (Vector3.up * tiles[g] * .25f);
+						Vector3 p2 = g.Move(i).ToWorld() + (Vector3.up * tiles[g.Move(i)] * .25f);
 						Debug.DrawLine(p1, p2, Color.red, 1000);
 					}
 					if (Mathf.Abs(tiles[g] - tiles[g.Move(i)]) == 2)
 					{
 						Color c = Color.red;
-						Vector3 p1 = g.WorldSpace() + (Vector3.up * tiles[g] * .25f);
-						Vector3 p2 = g.Move(i).WorldSpace() + (Vector3.up * tiles[g.Move(i)] * .25f);
+						Vector3 p1 = g.ToWorld() + (Vector3.up * tiles[g] * .25f);
+						Vector3 p2 = g.Move(i).ToWorld() + (Vector3.up * tiles[g.Move(i)] * .25f);
 						Debug.DrawLine(p1, p2, Color.blue, 1000);
 					}
 					if (Mathf.Abs(tiles[g] - tiles[g.Move(i)]) == 3)
 					{
 						Color c = Color.red;
-						Vector3 p1 = g.WorldSpace() + (Vector3.up * tiles[g] * .25f);
-						Vector3 p2 = g.Move(i).WorldSpace() + (Vector3.up * tiles[g.Move(i)] * .25f);
+						Vector3 p1 = g.ToWorld() + (Vector3.up * tiles[g] * .25f);
+						Vector3 p2 = g.Move(i).ToWorld() + (Vector3.up * tiles[g.Move(i)] * .25f);
 						Debug.DrawLine(p1, p2, Color.green, 1000);
 					}
 				}
